@@ -1,0 +1,26 @@
+[
+	{
+		"caption": "Vcli - Run all",
+		"command": "vcli_run_all"
+	},
+    {
+		"caption": "Vcli - Show output panel",
+		"command": "vcli_show_output_panel"
+	},
+	{
+		"caption": "Vcli - Open vcli prompt",
+		"command": "vcli_open_cli"
+	},
+	{
+		"caption": "Vcli - Open vcli SublimeREPL",
+		"command": "vcli_new_sublime_repl"
+	},
+	{
+		"caption": "Vcli - Open a new sql file",
+		"command": "vcli_new_sql_file"
+	},
+    {
+		"caption": "Vcli - Switch connection string",
+		"command": "vcli_switch_connection_string"
+	}
+]
