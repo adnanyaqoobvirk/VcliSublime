@@ -24,7 +24,6 @@ executor_lock = Lock()
 
 recent_urls = []
 
-
 logger = logging.getLogger('vcli_sublime')
 
 
@@ -295,8 +294,10 @@ def is_sql(view):
         return False
 
     syntax_file = view.settings().get('syntax')
-    return 'sql' in syntax_file.lower()
-
+    if syntax_file:
+        return 'sql' in syntax_file.lower()
+    else:
+        return False
 
 def check_vcli(view):
     """Check if a vcli connection for the view exists, or request one"""
