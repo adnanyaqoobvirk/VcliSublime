@@ -1,22 +1,22 @@
 [
 	{
-		"keys": 	["alt+enter"],
+		"keys": 	["alt+shift+enter"],
 		"command": 	"vcli_run_all"
 	},
 	{
-		"keys": 	["ctrl+alt+enter"],
+		"keys": 	["ctrl+alt+shift+enter"],
 		"command": 	"vcli_run_current"
 	},
 	{
-		"keys": 	["alt+`"],
+		"keys": 	["alt+shift+`"],
 		"command": 	"vcli_show_output_panel"
 	},
 	{
-	    "keys":     ["ctrl+f12"],
+	    "keys":     ["ctrl+shift+f12"],
 	    "command":  "vcli_open_cli"
 	},
 	{
-	    "keys":     ["alt+f12"],
+	    "keys":     ["alt+shift+f12"],
 	    "command":  "vcli_new_sublime_repl"
 	},
 	{
@@ -24,7 +24,7 @@
 	    "command":  "vcli_new_sql_file"
 	},
     {
-	    "keys":     ["ctrl+alt+shift+c"],
+	    "keys":     ["ctrl+alt+shift+s"],
 	    "command":  "vcli_switch_connection_string"
 	}
 ]

@@ -3,6 +3,10 @@
 		"caption": "Vcli - Run all",
 		"command": "vcli_run_all"
 	},
+	{
+		"caption": "Vcli - Run current",
+		"command": "vcli_run_current"
+	},
     {
 		"caption": "Vcli - Show output panel",
 		"command": "vcli_show_output_panel"
