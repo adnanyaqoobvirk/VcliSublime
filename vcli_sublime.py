@@ -391,7 +391,12 @@ def new_executor(url):
 
 def run_sql_async(view, sql):
     executor = executors[view.buffer_id()]
+    
     panel = get_output_panel(view)
+    panel.set_read_only(False)
+    panel.settings().set("word_wrap", False)
+    panel.set_syntax_file('Packages/SQL/SQL.tmLanguage')
+    
     logger.debug('Command: VcliExecute: %r', sql)
     save_mode = get(view, 'vcli_save_on_run_query_mode')
 
@@ -405,7 +410,7 @@ def run_sql_async(view, sql):
 
     try:
         for (title, cur, headers, status, _) in results:
-            fmt = format_output(title, cur, headers, status, 'vsql')
+            fmt = format_output(title, cur, headers, status, 'psql', special.expanded_output, special.aligned)
             out = ('\n'.join(fmt)
                    + '\n\n' + str(datetime.datetime.now()) + '\n\n')
             panel.run_command('append', {'characters': out})
@@ -439,3 +444,4 @@ def run_sql_async(view, sql):
             completers[url].set_search_path(executor.search_path())
             logger.debug('Search path: %r', completers[url].search_path)
 
+    panel.set_read_only(True)
