@@ -98,7 +98,7 @@ class VcliPlugin(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
 
-        if not get(view, 'vcli_autocomplete'):
+        if not get(view, 'vcli_autocomplete') and not is_sql(view):
             return []
 
         logger.debug('Searching for completions')
@@ -113,23 +113,31 @@ class VcliPlugin(sublime_plugin.EventListener):
         if not completer:
             return
 
-        text = get_entire_view_text(view)
-        cursor_pos = view.sel()[0].begin()
-        logger.debug('Position: %d Text: %r', cursor_pos, text)
+        sql = get_entire_view_text(view)
+        curr_point = view.sel()[0].a
 
-        comps = completer.get_completions(
-            Document(text=text, cursor_position=cursor_pos), None)
+        logger.debug('Position: %d Text: %r', curr_point, sql)
 
-        if not comps:
-            logger.debug('No completions found')
-            return []
+        sql_position = get_current_query_with_position(sql, curr_point)
+        sql = sql_position[0]
+        curr_point = sql_position[1]
 
-        comps = [('{}\t{}'.format(c.text, c.display_meta), c.display)
-                    for c in comps]
-        logger.debug('Found completions: %r', comps)
+        if len(sql) > 0:
+            comps = completer.get_completions(
+                Document(text=sql, cursor_position=curr_point), None)
 
-        return comps, (sublime.INHIBIT_WORD_COMPLETIONS
+            if not comps:
+                logger.debug('No completions found')
+                return []
+
+            comps = [('{}\t{}'.format(c.text, c.display_meta), c.display)
+                        for c in comps]
+            logger.debug('Found completions: %r', comps)
+
+            return comps, (sublime.INHIBIT_WORD_COMPLETIONS
                         | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+        else:
+            return []
 
 
 class VcliSwitchConnectionStringCommand(sublime_plugin.TextCommand):
@@ -184,14 +192,7 @@ class VcliRunCurrentCommand(sublime_plugin.TextCommand):
         if not sql and len(sel) == 1:
             # Nothing highlighted - find the current query
             sql = get_entire_view_text(self.view)
-            split_sql = sqlparse.split(sql)
-            curr_point = sel[0].a
-            cum_len = 0
-
-            for sql in split_sql:
-                cum_len += len(sql)
-                if curr_point <= cum_len:
-                    break
+            sql = get_current_query_with_position(sql, sel[0].a)[0]
 
         # Run the sql in a separate thread
         t = Thread(target=run_sql_async,
@@ -354,7 +355,6 @@ def get(view, key):
     val = view.settings().get(key)
     return val if val else settings.get(key)
 
-
 def get_entire_view_text(view):
     return view.substr(sublime.Region(0, view.size()))
 
@@ -445,3 +445,19 @@ def run_sql_async(view, sql):
             logger.debug('Search path: %r', completers[url].search_path)
 
     panel.set_read_only(True)
+
+
+def get_current_query_with_position(sql, curr_point):
+    # remove new lines count from current position
+    newlines_count = len(sql[:curr_point].split('\n')) - 1
+    curr_point = curr_point - newlines_count
+
+    split_sql = sqlparse.split(sql)
+    cum_len = 0
+
+    for sql in split_sql:
+        cum_len += len(sql)
+        if curr_point <= cum_len:
+            break
+
+    return (sql, len(sql) - (cum_len - curr_point))
