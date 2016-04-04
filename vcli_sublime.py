@@ -98,7 +98,7 @@ class VcliPlugin(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
 
-        if not get(view, 'vcli_autocomplete') and not is_sql(view):
+        if not get(view, 'vcli_autocomplete') or not is_sql(view):
             return []
 
         logger.debug('Searching for completions')
