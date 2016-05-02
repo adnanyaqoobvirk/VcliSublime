@@ -34,7 +34,7 @@ First, ```"vcli_site_dirs"``` need to be set to site-packages directory of virtu
 ```json
 {
     "vcli_site_dirs": ["/home/adnan/Desktop/virts/vcli/lib/python3.3/site-packages"],
-    "vcli_url": "vertica:/user:password@172.16.4.12:5433/conure_db"
+    "vcli_url": "vertica://user:password@192.168.1.1:5433/test_db"
 }
 ```
 
