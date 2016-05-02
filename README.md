@@ -15,14 +15,14 @@ git clone https://github.com/adnanyaqoobvirk/VcliSublime.git
 
 Second, create a virtual environment based on Python 3 in directory of your liking using the following command
 ```bash
-virtualenv -p python3 vcli
+virtualenv -p python3.3 vcli
 ```
 
 Next you need to install **vcli** and **vertica_python** in the freshly created virtual environment using pip, currently these packages do not support Python 3, I have made changes in them to support the Python 3 so you need to install these packages from my git repositories:
 ```bash
 source vcli/bin/activate
-pip install https://github.com/adnanyaqoobvirk/vertica_python.git
-pip install https://github.com/adnanyaqoobvirk/vcli.git
+pip install https://github.com/adnanyaqoobvirk/vertica-python/archive/master.zip
+pip install https://github.com/adnanyaqoobvirk/vcli/archive/master.zip
 ```
 
 ##Configuration
